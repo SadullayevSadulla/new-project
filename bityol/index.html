@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BitYo’l — kompyuter do’koni</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1f6;--surface:#fff;--ink:#17202f;--mute:#5b667a;--line:#d5dbe6;--accent:#2a55f5;--accent-ink:#fff;--warm:#ffb400;--ok:#13805a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f1521;--surface:#182033;--ink:#e8edf7;--mute:#98a3b8;--line:#2a344b;--accent:#6b8cff;--accent-ink:#0f1521;--ok:#4cc59a}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0f1521;--surface:#182033;--ink:#e8edf7;--mute:#98a3b8;--line:#2a344b;--accent:#6b8cff;--accent-ink:#0f1521;--ok:#4cc59a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 Onest,system-ui,sans-serif}
+h1,h2,h3{font-family:Unbounded,Onest,system-ui,sans-serif;line-height:1.15;margin:0}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:16px;height:60px}
+.logo{font:800 20px Unbounded,sans-serif;letter-spacing:-.5px}
+.logo i{font-style:normal;color:var(--accent)}
+.sp{flex:1}
+.btn{border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.cartbtn b{background:var(--warm);color:#17202f;border-radius:99px;padding:1px 8px;margin-left:6px;font-size:13px}
+.hero{padding:56px 0 36px}
+.hero h1{font-size:clamp(28px,5.4vw,52px);max-width:15em;font-weight:800}
+.hero p{max-width:34em;color:var(--mute);margin:16px 0 28px}
+.budget{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;max-width:640px}
+.budget label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-weight:500;flex-wrap:wrap}
+.budget output{font:800 26px Unbounded,sans-serif;color:var(--accent)}
+.budget input[type=range]{width:100%;margin:16px 0 8px;accent-color:var(--accent)}
+.budget small{color:var(--mute)}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:28px 0 18px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:7px 16px;cursor:pointer;font-weight:500}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.bar input,.bar select{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:9px 12px}
+.bar input{flex:1;min-width:160px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;padding-bottom:48px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.ico{height:96px;border-radius:8px;background:var(--bg);display:grid;place-items:center;font-size:44px;position:relative}
+.tag{position:absolute;top:8px;left:8px;background:var(--warm);color:#17202f;font-size:12px;font-weight:700;border-radius:4px;padding:1px 7px}
+.card h3{font-size:15px;font-weight:600}
+.card p{margin:0;color:var(--mute);font-size:14px;flex:1}
+.price{font-weight:700;font-size:18px}
+.price s{color:var(--mute);font-weight:400;font-size:13px;margin-left:6px}
+.empty{grid-column:1/-1;padding:40px;text-align:center;color:var(--mute)}
+.why{background:var(--surface);border-block:1px solid var(--line);padding:40px 0}
+.why .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px}
+.why h3{font-size:16px;margin-bottom:6px}
+.why p{margin:0;color:var(--mute);font-size:15px}
+footer{padding:32px 0;color:var(--mute);font-size:14px}
+.ov{position:fixed;inset:0;background:rgba(10,15,25,.55);z-index:30;display:none}
+.ov.on{display:block}
+aside{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--surface);z-index:31;transform:translateX(100%);transition:transform .25s;display:flex;flex-direction:column;padding:calc(18px + env(safe-area-inset-top,0px)) 18px calc(18px + env(safe-area-inset-bottom,0px))}
+aside.on{transform:none}
+aside header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+#items{flex:1;overflow:auto}
+.row{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.row small{color:var(--mute)}
+.qty{display:flex;align-items:center;gap:8px;grid-column:1/-1}
+.qty button{width:30px;height:30px;border-radius:6px;border:1px solid var(--line);background:var(--bg);cursor:pointer}
+.tot{display:flex;justify-content:space-between;font-weight:700;font-size:18px;padding:14px 0}
+.fld{display:grid;gap:8px;margin-bottom:10px}
+.fld input{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:10px 12px}
+.msg{color:var(--ok);font-weight:500;margin:8px 0}
+.err{color:#c0392b;font-size:14px;margin:0}
+.nav{display:flex;gap:18px}.nav a{color:var(--ink);text-decoration:none;font-weight:500}.nav a:hover{color:var(--accent)}
+@media (max-width:640px){.nav{display:none}}
+.sec{padding:48px 0;border-top:1px solid var(--line)}
+.sec h2{font-size:clamp(22px,3.5vw,32px);margin-bottom:8px}
+.lead{color:var(--mute);margin:0 0 24px;max-width:36em}
+.bgrid{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:start}
+@media (max-width:760px){.bgrid{grid-template-columns:1fr}}
+#bl select{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px 12px}
+#bl label{font-weight:500}
+.res{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;position:sticky;top:76px}
+.res h3{font-size:16px;margin-bottom:10px}.res ul{margin:0 0 8px;padding-left:18px;color:var(--mute);font-size:14px}
+.bw{font-size:14px;color:var(--mute);min-height:22px}.bw.bad{color:#c0392b;font-weight:500}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.br{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-top:10px}
+summary{cursor:pointer;font-weight:600}details p{margin:10px 0 0;color:var(--mute)}
+@media (prefers-reduced-motion:reduce){aside{transition:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="logo">Bit<i>Yo’l</i></div><nav class="nav"><a href="#catalog">Katalog</a><a href="#builder">Kompyuter yig’ish</a><a href="#filiallar">Filiallar</a></nav><div class="sp"></div>
+  <button class="btn ghost" id="theme" aria-label="Mavzuni almashtirish">Mavzu</button>
+  <button class="btn cartbtn" id="open">Savat<b id="cnt">0</b></button>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+  <h1>Byudjetingizga mos kompyuter va qismlar</h1>
+  <p>Noutbuk, monitor, protsessor, videokarta va periferiya. Narxni tanlang, ro’yxat o’zi qisqaradi.</p>
+  <div class="budget">
+    <label for="bud">Eng ko’pi bilan <output id="budv"></output></label>
+    <input type="range" id="bud" min="200000" max="20000000" step="100000" value="20000000">
+    <small id="found"></small>
+  </div>
+</div></section>
+
+<section id="catalog"><div class="wrap">
+  <div class="bar" id="bar">
+    <input type="search" id="q" placeholder="Mahsulot qidirish" aria-label="Qidirish">
+    <select id="sort" aria-label="Tartiblash">
+      <option value="pop">Mashhurlari</option><option value="asc">Arzonidan</option><option value="desc">Qimmatidan</option>
+    </select>
+  </div>
+  <div class="bar" id="cats" role="group" aria-label="Kategoriyalar"></div>
+  <div class="grid" id="grid"></div>
+</div></section>
+
+<section class="sec" id="builder"><div class="wrap">
+  <h2>Kompyuter yig’ish</h2>
+  <p class="lead">Qismlarni tanlang. Moslik va quvvat avtomatik tekshiriladi, tayyor yig’ilmani bir bosishda savatga qo’shasiz.</p>
+  <div class="bgrid"><div id="bl"></div>
+  <div class="res"><h3>Sizning yig’ilmangiz</h3><ul id="bsum"></ul><div class="tot"><span>Jami</span><span id="btot">0 so’m</span></div><p id="bw" class="bw"></p><button class="btn" id="badd" style="width:100%">Hammasini savatga qo’shish</button></div></div>
+</div></section>
+
+<section class="sec" id="filiallar"><div class="wrap">
+  <h2>Filiallarimiz</h2>
+  <p class="lead">Mahsulotni o’z ko’zingiz bilan ko’rib, mutaxassis bilan maslahatlashing.</p>
+  <div class="br">
+    <div class="card"><h3>Chilonzor</h3><p>Bunyodkor shoh ko’chasi<br>Har kuni 09:00–20:00<br>+998 71 200 00 01</p></div>
+    <div class="card"><h3>Yunusobod</h3><p>Amir Temur shoh ko’chasi<br>Har kuni 09:00–21:00<br>+998 71 200 00 02</p></div>
+    <div class="card"><h3>Mirzo Ulug’bek</h3><p>Mirzo Ulug’bek ko’chasi<br>Dushanba–shanba 10:00–19:00<br>+998 71 200 00 03</p></div>
+  </div>
+  <h2 style="margin-top:40px">Ko’p so’raladigan savollar</h2>
+  <details><summary>Kafolat qancha muddatga beriladi?</summary><p>Mahsulot turiga qarab 12 oygacha. Kafolat talon bilan birga rasmiylashtiriladi.</p></details>
+  <details><summary>Bo’lib to’lash qanday ishlaydi?</summary><p>Passport bilan filialga kelasiz, 3, 6 yoki 12 oyga muddat tanlaysiz. Birinchi to’lov mahsulotni olganda amalga oshadi.</p></details>
+  <details><summary>Yetkazish qancha turadi?</summary><p>Toshkent ichida 500 000 so’mdan yuqori buyurtmalar bepul yetkaziladi. Qolganlari uchun narx operator bilan kelishiladi.</p></details>
+  <details><summary>Qismlar bir-biriga mosligini kim tekshiradi?</summary><p>Yuqoridagi yig’ish bo’limi soket va quvvat mosligini tekshiradi. Yakuniy buyurtmani operatorimiz ham qayta ko’rib chiqadi.</p></details>
+</div></section>
+
+<section class="why"><div class="wrap">
+  <div><h3>Rasmiy kafolat</h3><p>Har bir mahsulotga 12 oygacha kafolat beriladi.</p></div>
+  <div><h3>Toshkent bo’ylab yetkazish</h3><p>Buyurtma ertasi kuni manzilingizga yetkaziladi.</p></div>
+  <div><h3>Bo’lib to’lash</h3><p>12 oygacha foizsiz bo’lib to’lash imkoniyati.</p></div>
+  <div><h3>Maslahat</h3><p>Qaysi qism mos kelishini mutaxassislarimiz aytib beradi.</p></div>
+</div></section>
+</main>
+<footer><div class="wrap">BitYo’l — namuna loyiha. Narxlar va mahsulotlar misol sifatida keltirilgan.</div></footer>
+
+<div class="ov" id="ov"></div>
+<aside id="cart" aria-label="Savat" aria-hidden="true">
+  <header><h2 style="font-size:18px">Savat</h2><button class="btn ghost" id="close">Yopish</button></header>
+  <div id="items"></div>
+  <div class="tot"><span>Jami</span><span id="sum">0 so’m</span></div>
+  <div id="co">
+    <div class="fld"><input id="nm" placeholder="Ismingiz" autocomplete="name"><input id="ph" placeholder="Telefon: +998 90 123 45 67" inputmode="tel" autocomplete="tel"></div>
+    <p class="err" id="err"></p>
+    <button class="btn" id="order" style="width:100%">Buyurtma berish</button>
+  </div>
+  <div class="msg" id="ok" hidden></div>
+</aside>
+
+<script>
+const P=[
+{id:1,n:"Noutbuk Aero 15, Ryzen 5, 16 GB, 512 GB SSD",c:"Noutbuklar",p:7900000,o:8900000,s:"15.6” IPS, kundalik ish va o’qish uchun",i:"💻",t:"Chegirma",pop:9},
+{id:2,n:"Noutbuk Forge 16, Core i7, RTX 4060",c:"Noutbuklar",p:16900000,s:"16” 165 Hz, o’yin va dizayn uchun",i:"🎮",pop:8},
+{id:3,n:"Noutbuk Slim 14, Core i5, 8 GB, 256 GB",c:"Noutbuklar",p:5600000,s:"1,3 kg, 10 soatgacha batareya",i:"💻",pop:7},
+{id:4,n:"Monitor 24” IPS Full HD 75 Hz",c:"Monitorlar",p:1450000,s:"HDMI va VGA, ko’zni himoya qiladi",i:"🖥️",pop:9},
+{id:5,n:"Monitor 27” QHD 144 Hz",c:"Monitorlar",p:3200000,s:"1 ms javob vaqti, G-Sync mos",i:"🖥️",t:"Yangi",pop:6},
+{id:6,n:"Protsessor Ryzen 5 7600",c:"Qismlar",p:2650000,s:"6 yadro, AM5, kuler bilan",i:"🧠",pop:6},
+{id:7,n:"Videokarta RTX 4060 8 GB",c:"Qismlar",p:4700000,s:"1080p da barcha o’yinlar uchun",i:"🎞️",pop:8},
+{id:8,n:"SSD NVMe 1 TB",c:"Qismlar",p:980000,o:1150000,s:"O’qish tezligi 3500 MB/s gacha",i:"💾",t:"Chegirma",pop:9},
+{id:9,n:"Operativ xotira DDR5 16 GB (2×8)",c:"Qismlar",p:720000,s:"5600 MHz, radiatorli",i:"🧩",pop:5},
+{id:10,n:"Mexanik klaviatura, simsiz",c:"Periferiya",p:480000,s:"Bluetooth va USB, yoritilgan tugmalar",i:"⌨️",pop:7},
+{id:11,n:"Simsiz sichqoncha 2400 DPI",c:"Periferiya",p:120000,s:"Jim tugmalar, bitta batareya 12 oy",i:"🖱️",pop:8},
+{id:12,n:"Quloqchin mikrofon bilan",c:"Periferiya",p:350000,s:"Shovqinni kamaytiradi, USB",i:"🎧",pop:6},
+{id:13,n:"Protsessor Ryzen 7 7700",c:"Qismlar",k:"cpu",sock:"AM5",w:65,p:3550000,s:"8 yadro, AM5, kuler bilan",i:"🧠",pop:5},
+{id:14,n:"Protsessor Core i5-14400F",c:"Qismlar",k:"cpu",sock:"LGA1700",w:65,p:2300000,s:"10 yadro, LGA1700",i:"🧠",pop:6},
+{id:15,n:"Ona plata B650 (AM5)",c:"Qismlar",k:"mb",sock:"AM5",p:1850000,s:"DDR5, M.2, Wi-Fi",i:"🔌",pop:5},
+{id:16,n:"Ona plata B760 (LGA1700)",c:"Qismlar",k:"mb",sock:"LGA1700",p:1500000,s:"DDR5, M.2, 2.5G LAN",i:"🔌",pop:5},
+{id:17,n:"Quvvat bloki 650 W 80+ Bronze",c:"Qismlar",k:"psu",w:650,p:620000,s:"Jim ishlaydi, himoyalangan",i:"🔋",pop:5},
+{id:18,n:"Quvvat bloki 850 W 80+ Gold",c:"Qismlar",k:"psu",w:850,p:1150000,s:"Modulli kabellar, 10 yil kafolat",i:"🔋",pop:4},
+{id:19,n:"Korpus ATX, shishali yon panel",c:"Qismlar",k:"case",p:540000,s:"3 ta ventilyator bilan",i:"📦",pop:5},
+{id:20,n:"Videokarta RTX 4070 12 GB",c:"Qismlar",k:"gpu",w:200,p:8200000,s:"1440p va yuqori sozlamalar uchun",i:"🎞️",t:"Yangi",pop:5}
+];
+const fmt=n=>n.toLocaleString("ru-RU").replace(/\u00a0/g," ")+" so’m";
+const $=id=>document.getElementById(id);
+let cat="Barchasi",cart={};
+try{const s=localStorage.getItem("bityol-cart");if(s)cart=JSON.parse(s)||{}}catch(e){}
+const save=()=>{try{localStorage.setItem("bityol-cart",JSON.stringify(cart))}catch(e){}};
+
+function cats(){
+  const list=["Barchasi",...new Set(P.map(x=>x.c))];
+  $("cats").innerHTML=list.map(c=>`<button class="chip" aria-pressed="${c===cat}" data-c="${c}">${c}</button>`).join("");
+}
+function render(){
+  const max=+$("bud").value,q=$("q").value.trim().toLowerCase(),so=$("sort").value;
+  $("budv").textContent=max>=20000000?"cheklovsiz":fmt(max);
+  let l=P.filter(x=>x.p<=max&&(cat==="Barchasi"||x.c===cat)&&(x.n+x.s).toLowerCase().includes(q));
+  l.sort((a,b)=>so==="asc"?a.p-b.p:so==="desc"?b.p-a.p:b.pop-a.pop);
+  $("found").textContent=l.length+" ta mahsulot topildi";
+  $("grid").innerHTML=l.length?l.map(x=>`<article class="card"><div class="ico">${x.t?`<span class="tag">${x.t}</span>`:""}${x.i}</div><h3>${x.n}</h3><p>${x.s}</p><div class="price">${fmt(x.p)}${x.o?`<s>${fmt(x.o)}</s>`:""}</div><button class="btn" data-add="${x.id}">Savatga qo’shish</button></article>`).join(""):`<div class="empty">Bu narxda mahsulot topilmadi. Byudjetni oshirib ko’ring.</div>`;
+}
+function drawCart(){
+  const ids=Object.keys(cart).filter(k=>cart[k]>0&&P.find(p=>p.id==k));
+  let sum=0,n=0;
+  $("items").innerHTML=ids.length?ids.map(k=>{const p=P.find(x=>x.id==k),q=cart[k];sum+=p.p*q;n+=q;
+    return `<div class="row"><strong>${p.n}</strong><span>${fmt(p.p*q)}</span><div class="qty"><button data-m="${k}" aria-label="Kamaytirish">−</button><span>${q}</span><button data-p="${k}" aria-label="Ko’paytirish">+</button></div></div>`}).join(""):`<p style="color:var(--mute)">Savat bo’sh. Katalogdan mahsulot tanlang.</p>`;
+  $("sum").textContent=fmt(sum);$("cnt").textContent=n;
+  $("co").hidden=!ids.length;save();
+}
+function toggle(on){$("cart").classList.toggle("on",on);$("ov").classList.toggle("on",on);$("cart").setAttribute("aria-hidden",!on)}
+
+$("cats").onclick=e=>{const c=e.target.dataset.c;if(c){cat=c;cats();render()}};
+$("grid").onclick=e=>{const id=e.target.dataset.add;if(id){cart[id]=(cart[id]||0)+1;drawCart();$("ok").hidden=true}};
+$("items").onclick=e=>{const m=e.target.dataset.m,p=e.target.dataset.p;if(m)cart[m]--;if(p)cart[p]++;drawCart()};
+["bud","q","sort"].forEach(i=>$(i).addEventListener("input",render));
+$("open").onclick=()=>toggle(true);$("close").onclick=$("ov").onclick=()=>toggle(false);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")toggle(false)});
+$("order").onclick=()=>{
+  const nm=$("nm").value.trim(),ph=$("ph").value.replace(/\D/g,"");
+  if(!nm){$("err").textContent="Ismingizni kiriting.";return}
+  if(ph.length<9){$("err").textContent="Telefon raqamini to’liq kiriting.";return}
+  $("err").textContent="";cart={};drawCart();
+  $("ok").hidden=false;$("ok").textContent=nm+", buyurtmangiz qabul qilindi. Operator tez orada qo’ng’iroq qiladi.";
+};
+$("theme").onclick=()=>{const r=document.documentElement,d=getComputedStyle(r).colorScheme.includes("dark");r.dataset.theme=d?"light":"dark"};
+const KIND={6:"cpu",7:"gpu",8:"ssd",9:"ram"};
+P.forEach(x=>{if(KIND[x.id])x.k=KIND[x.id]});
+Object.assign(P[5],{sock:"AM5",w:65});Object.assign(P[6],{w:115});
+const SL=[["cpu","Protsessor"],["mb","Ona plata"],["ram","Operativ xotira"],["gpu","Videokarta"],["ssd","SSD"],["psu","Quvvat bloki"],["case","Korpus"]];
+$("bl").innerHTML=SL.map(([k,t])=>`<div class="fld"><label for="b-${k}">${t}</label><select id="b-${k}"><option value="">Tanlanmagan</option>${P.filter(x=>x.k===k).map(x=>`<option value="${x.id}">${x.n} (${fmt(x.p)})</option>`).join("")}</select></div>`).join("");
+const pick=()=>SL.map(([k])=>P.find(x=>x.id==$("b-"+k).value)).filter(Boolean);
+function calc(){
+  const l=pick(),by=k=>l.find(x=>x.k===k),w=[],c=by("cpu"),m=by("mb"),g=by("gpu"),u=by("psu");
+  $("bsum").innerHTML=l.length?l.map(x=>`<li>${x.n}</li>`).join(""):"<li>Hali hech narsa tanlanmadi</li>";
+  $("btot").textContent=fmt(l.reduce((a,x)=>a+x.p,0));
+  let bad=false;
+  if(c&&m&&c.sock!==m.sock){bad=true;w.push("Protsessor va ona plata soketi mos kelmaydi ("+c.sock+" va "+m.sock+").")}
+  const need=(c?c.w:0)+(g?g.w:0)+100;
+  if(u&&u.w<need*1.3){bad=true;w.push("Quvvat bloki yetarli emas: kamida "+Math.ceil(need*1.3/50)*50+" W kerak.")}
+  else if(c||g)w.push("Taxminiy sarfi: "+need+" W.");
+  $("bw").className="bw"+(bad?" bad":"");$("bw").innerHTML=w.join("<br>");
+  $("badd").disabled=!l.length;
+}
+$("bl").onchange=calc;
+$("badd").onclick=()=>{pick().forEach(x=>cart[x.id]=(cart[x.id]||0)+1);$("ok").hidden=true;drawCart();toggle(true)};
+cats();render();drawCart();calc();
+</script>
+</body>
+</html>
